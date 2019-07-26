@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <style type="text/css">
+        .zero{
+            width: 300px;
+            height: 300px;
+            margin: 200px;
+            border: 1px solid black;
+            transform-style: preserve-3d;
+            transition: 0.6s
+        }
+
+        .one{
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 300px;
+            height: 300px;
+            border: 1px solid black;
+        }
+
+        .two {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 300px;
+            height: 400px;
+            border: 1px solid black;
+        }
+
+        .one{
+            background-color: red;
+            z-index: 2;
+            backface-visibility: hidden;
+        }
+
+        .two{
+            backface-visibility: hidden;
+            transform: rotateY(180deg);
+        }
+
+
+        .ff {
+            transform: rotateY(180deg);
+        }
+    </style>
+</head>
+<body>
+    <div class="ooo">
+        <div class="zero">
+            <div class="one">asdasdasd</div>
+            <div class="two">ffffffffff</div>
+        </div>
+
+        <button>123</button>
+    </div>
+
+
+
+
+
+
+<script>
+    function $(select){
+        return document.querySelector(select)
+    }
+    function $$(select){
+        return document.querySelectorAll(select)
+    }
+
+    $('button').addEventListener('click',function(){
+        $('.zero').classList.add('ff')
+    })
+
+</script>
+</body>
+</html>
