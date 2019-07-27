@@ -22,11 +22,16 @@
   }
   a {
     text-decoration: none;
-    color: rgb(68,68,68);
+    color: rgb(255,255,255);
   }
-  body ,main ,html {
-    height: 100%;
-
+  body {
+    background-image: url('https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1564251074460&di=e47ada7549f6cf5749d531b37e28654f&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201802%2F24%2F20180224222225_UhuJE.jpeg');
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  main  {/*------------------------------*/
+    width: 100%;
+    height: 800px;
   }
   .iconfont_style {/*iconfont的格式*/
     display: inline-block;
@@ -47,32 +52,35 @@
     clear: both;
   }
 /*----------------------------------------------*/
-
-  .model_login {/*登录模态框*/
-    position: absolute;
+  .flip_model {
+    position: relative;
     left: 50%;
     top: 50%;
     margin-left: -200px;
-    margin-top: -120px;
+    margin-top: -140px;
+    width: 400px;
+    height: 280px;
+    display: none;
+  } 
+
+  .model_login {/*登录模态框*/
+    position: absolute;
     width: 400px;
     height: 240px;
-    border: 1px solid black;
+    background-color: rgb(255,255,255,0.2);
     backface-visibility: hidden;
-    /*display: none;*/
+    z-index: 2;
+        box-shadow: 10px 10px 10px rgb(0,0,0)
   }
 
     .model_register {/*注册模态框*/
     position: absolute;
-    left: 50%;
-    top: 50%;
-    margin-left: -200px;
-    margin-top: -120px;
     width: 400px;
     height: 280px;
-    border: 1px solid black;
+    background-color: rgb(255,255,255,0.2);
     transform: rotateY(180deg);
     backface-visibility: hidden;
-    /*display: none;*/
+        box-shadow: 10px 10px 10px rgb(0,0,0)
   }
 
   .login_title, .register_title {/*'登录','注册'标题定位*/
@@ -106,6 +114,7 @@
     top: 47px;
     color: #ff9800;
     font-size: 12px;
+    display: none;
   }
 
   .login_user_iconfont {/*用户名iconfont定位，登录注册框通用*/
@@ -149,20 +158,15 @@
   }
 /*---------------------------------------------*/
 /*翻转动画*/
-  .model_display_block {
-    display: block;
-  }
   .flip_model {
+    transform-style: preserve-3d;
     transition: 0.6s;
   }
-
 
   .flip {
     transform: rotateY(180deg);
   }
-
-
-
+  
   </style>
 </head>
 <body>
@@ -174,7 +178,7 @@
       <div class="model_login">
         <div class="login_title">
           <a id="title_bottom" href="#">登录</a>
-          <a id="click_flip" href="#">注册</a>
+          <a class="login_click_flip" href="#">注册</a>
         </div>
 
         <div class="input_prompt">
@@ -191,7 +195,7 @@
       </div>
       <div class="model_register">
         <div class="register_title">
-          <a href="#">登录</a>
+          <a href="#" class="register_click_flip">登录</a>
           <a href="#" id="title_bottom">注册</a>
         </div>  
         <div class="input_prompt">
@@ -215,13 +219,45 @@
     function $(select){
       return document.querySelector(select);
     }
+    function $$(select){
+      return document.querySelectorAll(select);
+    }
 
-    /*$('header a').addEventListener('click',function(){
-      $('.model_login').classList.add('model_display_block')
-    })*/
+    $('header a').addEventListener('click',function(e){                  /*右上角点击打开登录框*/
+      e.stopPropagation()/*阻止document.addEventListener绑定的默认操作*/
+      $('.flip_model').style = 'display:block'
+    })
 
-    $('#click_flip').addEventListener('click',function(){
-      $('.flip_model').classList.add('flip')
+    $('.flip_model').addEventListener('click',function(e){
+      e.stopPropagation()/*阻止document.addEventListener绑定的默认操作*/
+      if(e.target.classList.contains('login_click_flip')){
+        $('.flip_model').classList.add('flip')/*登录框翻转*/
+      }
+      if(e.target.classList.contains('register_click_flip')){
+        $('.flip_model').classList.remove('flip')/*注册框翻转*/
+      }
+      if (e.target.classList.contains('model_close')) {
+        $('.flip_model').style = 'display:none'/*X按钮关闭模态框显示*/
+      }
+    })
+
+    document.addEventListener('click',function(){/*使点击模态框外也能关闭模态框*/
+      $('.flip_model').style = 'display:none'
+    })
+
+    var reg = /^\w{3,8}//*点击验证输入框内的格式*/
+    $('.btn_login').addEventListener('click',function(){
+      if (!reg.test($$('.login_input input')[0].value) || 
+          !reg.test($$('.login_input input')[1].value)){
+        $('.model_login .input_prompt').style = 'display: block'
+      }
+    })
+    $('.btn_register').addEventListener('click',function(){
+      if (!reg.test($$('.register_input input')[0].value) ||
+          !reg.test($$('.register_input input')[1].value) || 
+          !reg.test($$('.register_input input')[2].value)) {
+        $('.model_register .input_prompt').style = 'display: block'
+      }
     })
   </script>
 </body>
